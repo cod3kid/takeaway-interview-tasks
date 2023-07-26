@@ -55,7 +55,12 @@ const PostPreviewScreen = ({ route }) => {
 
   const handleAddPost = async () => {
     const formData = new FormData();
-    formData.append("post", url);
+    formData.append("post", {
+      uri: url,
+      type: "image",
+      name: "file.jpeg",
+      fileName: "file",
+    });
     formData.append("description", text);
     formData.append("type", "image");
 

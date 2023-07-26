@@ -23,7 +23,7 @@ const AddPostModalScreen = () => {
       });
 
       if (!result.canceled) {
-        console.log("Selected file:", result.assets[0].uri);
+        console.log("Selected file:", result.assets[0]);
         navigation.navigate("PostPreview", { url: result?.assets[0]?.uri });
       }
     } catch (error) {
@@ -96,14 +96,17 @@ const AddPostModalScreen = () => {
               </TouchableWithoutFeedback>
             </View>
           </View>
-          <View
-            style={{
-              marginHorizontal: 16,
-              marginVertical: 5,
-              height: 1,
-              backgroundColor: "#000000",
-            }}
-          />
+          <View>
+            <View
+              style={{
+                height: 2,
+                backgroundColor: "#707070",
+                opacity: 0.2,
+                marginHorizontal: 16,
+              }}
+            />
+          </View>
+
           <View
             style={{
               display: "flex",

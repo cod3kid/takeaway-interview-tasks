@@ -4,8 +4,6 @@ import HomeScreen from "../screens/HomeScreen";
 import PhotosViewScreen from "../screens/PhotosViewScreen";
 import AddPostModalScreen from "../screens/AddPostModalScreen";
 import PostPreviewScreen from "../screens/PostPreviewScreen";
-// import AddPostScreen from "../screens/AppScreens/AddPostScreen";
-// import CommentsScreen from "../screens/AppScreens/CommentsScreen";
 
 const Stack = createNativeStackNavigator();
 
