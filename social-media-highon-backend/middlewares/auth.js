@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 
 const auth = (req, res, next) => {
   const token = req.header("x-auth-token");
-  console.log("mui", token);
+
   if (!token) {
     return res.send("No Token Found");
   }

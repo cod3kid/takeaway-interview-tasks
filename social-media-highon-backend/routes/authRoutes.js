@@ -9,14 +9,22 @@ const router = express.Router();
 router.post("/register", async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(req.body.password, salt);
-  const user = new User({
-    name: req.body.name,
-    email: req.body.email,
-    password: hashedPassword,
-  });
 
-  const result = await user.save();
-  res.send(result);
+  try {
+    const user = new User({
+      name: req.body.name,
+      email: req.body.email,
+      password: hashedPassword,
+    });
+
+    await user.save();
+    return res.send({ success: true, message: "Account created successfully" });
+  } catch (ex) {
+    return res.send({
+      success: false,
+      message: "Error Occurred",
+    });
+  }
 });
 
 router.post("/login", async (req, res) => {

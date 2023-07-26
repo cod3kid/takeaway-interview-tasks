@@ -6,9 +6,7 @@ const upload = require("../middlewares/upload");
 
 const router = express.Router();
 
-router.get("/my-posts", auth, async (req, res) => {
-  const { _id: userId } = req.user;
-
+router.get("/all-posts", auth, async (req, res) => {
   try {
     const data = await Post.find()
       .sort({ createdAt: -1 })
@@ -21,6 +19,7 @@ router.get("/my-posts", auth, async (req, res) => {
 });
 
 router.post("/add-post", auth, upload, async (req, res) => {
+  console.log("inside");
   const { description, type } = req.body;
   const { path } = req.file;
   const { _id: userId } = req.user;
