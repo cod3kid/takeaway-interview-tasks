@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useSelector } from "react-redux";
@@ -8,26 +8,20 @@ import AppNavigator from "./AppNavigator";
 import LoginScreen from "../screens/LoginScreen";
 import HomeScreen from "../screens/HomeScreen";
 import HomeNavigator from "./HomeNavigator";
+import AuthContextProvider, { AuthContext } from "../store/auth-context";
 
 export default function MainNavigator() {
   const user = useSelector((state) => state.userReducer);
-  console.log("mui", user);
+  const authCtx = useContext(AuthContext);
 
   const Stack = createNativeStackNavigator();
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        {!user ? (
-          <Stack.Screen
-            options={{ headerShown: false }}
-            name="HomeNav"
-            component={HomeNavigator}
-          />
-        ) : (
-          <Stack.Screen name="Login" component={LoginScreen} />
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
+    <AuthContextProvider>
+      <NavigationContainer>
+        {authCtx.isAuthenticated && <HomeNavigator />}
+        {!authCtx.isAuthenticated && <AuthNavigator />}
+      </NavigationContainer>
+    </AuthContextProvider>
   );
 }

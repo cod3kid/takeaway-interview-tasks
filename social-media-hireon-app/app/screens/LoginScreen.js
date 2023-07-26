@@ -12,10 +12,12 @@ import { getThemeColors, lightColors, darkColors } from "../utils";
 import Screen from "../components/common/Screen";
 import Button from "../components/Auth/Button";
 import TextField from "../components/Auth/TextField";
+import { AuthContext } from "../store/auth-context";
 
 export default function LoginScreen({ navigation }) {
   const isDark = useSelector((state) => state.themeReducer);
   const userData = useSelector((state) => state.userReducer);
+  const authCtx = useContext(AuthContext);
 
   const [isLoaderVisible, setLoaderVisible] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -90,7 +92,8 @@ export default function LoginScreen({ navigation }) {
         .then((response) => {
           console.log("data", response.data.token);
           const { user, token } = response.data;
-          dispatch(addUserData(userData, user));
+          // dispatch(addUserData(userData, user));
+          authCtx.authenticate(token);
           setLoaderVisible(false);
           navigation.navigate("HomeNav", { screen: "Home" });
         })
