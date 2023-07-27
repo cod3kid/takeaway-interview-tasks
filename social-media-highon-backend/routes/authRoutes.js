@@ -9,7 +9,7 @@ const router = express.Router();
 router.post("/register", async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(req.body.password, salt);
-  let user = new User({
+  const user = new User({
     name: req.body.name,
     email: req.body.email,
     password: hashedPassword,
@@ -22,7 +22,10 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   let user = await User.findOne({ email: req.body.email });
   if (!user) {
-    return res.send("Invalid User or Password");
+    return res.send({
+      success: false,
+      message: "Invalid Username or Password",
+    });
   }
   const validatePassword = await bcrypt.compare(
     req.body.password,
@@ -30,7 +33,10 @@ router.post("/login", async (req, res) => {
   );
 
   if (!validatePassword) {
-    return res.send("Invalid User or Password");
+    return res.send({
+      success: false,
+      message: "Invalid Username or Password",
+    });
   }
 
   const token = jwt.sign({ _id: user._id }, "dummyTokenSecret");
