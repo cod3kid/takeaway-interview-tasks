@@ -21,7 +21,6 @@ function AuthContextProvider({ children }) {
       setAuthToken(fetchedToken);
       setUserData(JSON.parse(fetchedUserData));
     };
-    console.log("ftech user dta");
 
     fetchToken();
   }, []);
@@ -40,7 +39,6 @@ function AuthContextProvider({ children }) {
     AsyncStorage.removeItem("token");
     AsyncStorage.removeItem("user");
   };
-  console.log("before storing", userData);
 
   const value = {
     token: authToken,

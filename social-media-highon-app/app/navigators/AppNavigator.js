@@ -29,14 +29,7 @@ const AppNavigator = () => {
         component={HomeNavigator}
         options={{
           tabBarIcon: ({ color, size, focused }) => (
-            <Image
-              source={
-                isDark
-                  ? getDarkIcon(focused, "home")
-                  : getLightIcon(focused, "home")
-              }
-              style={{ height: 24, width: 24 }}
-            />
+            <MaterialCommunityIcons name="home" color={primary} size={size} />
           ),
         }}
       />

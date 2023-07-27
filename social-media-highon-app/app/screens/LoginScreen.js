@@ -86,7 +86,6 @@ export default function LoginScreen({ navigation }) {
           password,
         })
         .then((response) => {
-          console.log("data", response.data.token);
           const { user, token } = response.data;
           authCtx.authenticate({ token, user });
           setLoaderVisible(false);

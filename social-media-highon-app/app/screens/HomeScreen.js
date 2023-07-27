@@ -21,18 +21,18 @@ import Screen from "../components/common/Screen";
 import axios from "../utils/axiosInstance";
 import { MY_POSTS, LIKE_ACTION } from "../utils/api";
 import { AuthContext } from "../store/auth-context";
+import Header from "../components/common/Header";
 
 const screenWidth = Dimensions.get("window").width;
 
 const HomeScreen = () => {
-  const isDark = false;
   const navigation = useNavigation();
   const [search, setSearch] = useState("");
   const authCtx = useContext(AuthContext);
   const [fetchedPosts, setFetchedPosts] = useState([]);
   const [localLikedPosts, setLocalLikedPosts] = useState([]);
   const { main, primary, dividerColor, blue, containerColor } =
-    getThemeColors(isDark);
+    getThemeColors(false);
 
   const headers = { "x-auth-token": authCtx.token };
   const userId = authCtx?.user?._id;
@@ -144,14 +144,7 @@ const HomeScreen = () => {
 
   return (
     <Screen style={styles.screen}>
-      <Header
-        styles={styles}
-        primary={primary}
-        dividerColor={dividerColor}
-        value={search}
-        onChangeText={(text) => setSearch(text)}
-      />
-
+      <Header styles={styles} primary={primary} dividerColor={dividerColor} />
       <ScrollView>
         <View
           style={{
@@ -168,6 +161,7 @@ const HomeScreen = () => {
             fetchedPosts={[...fetchedPosts].filter(
               (item, index) => index % 2 === 0
             )}
+            combinedPosts={fetchedPosts}
             handleLikePress={handleLikePress}
             userId={userId}
             navigation={navigation}
@@ -181,6 +175,7 @@ const HomeScreen = () => {
             fetchedPosts={[...fetchedPosts].filter(
               (item, index) => index % 2 !== 0
             )}
+            combinedPosts={fetchedPosts}
             handleLikePress={handleLikePress}
             userId={userId}
             navigation={navigation}
@@ -191,55 +186,12 @@ const HomeScreen = () => {
   );
 };
 
-const Header = ({ styles, primary }) => {
-  return (
-    <View style={styles.headerContainer}>
-      <View>
-        <Image
-          source={require("../../assets/icons/high-on-logo.png")}
-          style={{ height: 30, width: 63 }}
-          resizeMode="cover"
-        />
-      </View>
-      <View style={styles.searchInputContainer}>
-        <MaterialCommunityIcons
-          name="plus-box-outline"
-          size={32}
-          color={primary}
-        />
-        <MaterialCommunityIcons name="magnify" size={32} color={primary} />
-
-        {/* <TextInput
-          value={value}
-          onChangeText={onChangeText}
-          placeholder="Username"
-          placeholderTextColor={dividerColor}
-          style={{
-            flex: 1,
-            marginLeft: 10,
-            fontSize: 16,
-            color: primary,
-          }}
-        /> */}
-      </View>
-    </View>
-  );
-};
-const SearchButton = ({ styles, onPress }) => {
-  return (
-    <TouchableWithoutFeedback onPress={onPress}>
-      <View style={styles.searchButtonContainer}>
-        <Text style={styles.buttonFont}>Search</Text>
-      </View>
-    </TouchableWithoutFeedback>
-  );
-};
-
 const ExploreGrid = ({
   styles,
   getImageStyle,
   gridSide,
   fetchedPosts,
+  combinedPosts,
   handleLikePress,
   userId,
   likedPosts,
@@ -279,10 +231,25 @@ const ExploreGrid = ({
           handleLikePress(postId);
         };
 
+        const getCombinedPostsToPass = () => {
+          const currentCombinedPosts = [...combinedPosts];
+          const postsWithoutCurrent = currentCombinedPosts.filter(
+            (post) => post._id !== item._id
+          );
+
+          // const temp = currentCombinedPosts[0];
+          // currentCombinedPosts[0] = currentCombinedPosts[actualIndex];
+          // currentCombinedPosts[actualIndex] = temp;
+
+          return [item, ...postsWithoutCurrent];
+        };
+
         return (
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("PhotosView");
+              navigation.navigate("PhotosView", {
+                allPosts: getCombinedPostsToPass(),
+              });
             }}
           >
             <View style={[styles.imageContainer]}>
