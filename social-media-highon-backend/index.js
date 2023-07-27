@@ -26,5 +26,5 @@ mongoose
   });
 
 app.listen(4000, () => {
-  console.log("Server Running On Port 4000");
+  console.log("Server Listening to Port 4000");
 });

@@ -11,7 +11,6 @@ import { all } from "axios";
 
 const PhotosViewScreen = ({ route }) => {
   const { allPosts } = route.params;
-  console.log("mui all posts", allPosts);
   const [fetchedPosts, setFetchedPosts] = useState([...allPosts]);
   const [localLikedPosts, setLocalLikedPosts] = useState([]);
   const authCtx = useContext(AuthContext);

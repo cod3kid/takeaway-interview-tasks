@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, StyleSheet, Keyboard, Image } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
+import axios from "../utils/axiosInstance";
 
 import Screen from "../components/common/Screen";
 import TextField from "../components/Auth/TextField";
@@ -77,23 +77,29 @@ export default function RegisterScreen({ navigation }) {
 
     try {
       await axios
-        .post(REGISTER, {
-          name,
-          email,
-          password,
-        })
-        .then((response) => {
-          if (response.success) {
-            navigation.navigate("Login");
-            setLoaderVisible(false);
+        .post(
+          REGISTER,
+          {
+            name,
+            email,
+            password,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
           }
-        })
-        .catch((err) => {
-          console.log(err);
+        )
+        .then((response) => {
+          const { success } = response.data;
+          if (success) {
+            navigation.navigate("Login");
+          }
           setLoaderVisible(false);
         });
     } catch (ex) {
-      console.warn(ex, "mui");
+      console.warn("Error Occured", ex);
+      setLoaderVisible(false);
     }
   };
 

@@ -19,10 +19,10 @@ router.get("/all-posts", auth, async (req, res) => {
 });
 
 router.post("/add-post", auth, upload, async (req, res) => {
-  console.log("inside");
   const { description, type } = req.body;
   const { path } = req.file;
   const { _id: userId } = req.user;
+  console.log("Reached Here \n\n\n\n");
 
   try {
     const newPost = new Post({

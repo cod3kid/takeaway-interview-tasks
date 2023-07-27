@@ -57,7 +57,7 @@ const PostPreviewScreen = ({ route }) => {
     const formData = new FormData();
     formData.append("post", {
       uri: url,
-      type: "image",
+      type: "image/jpeg",
       name: "file.jpeg",
       fileName: "file",
     });
@@ -66,7 +66,7 @@ const PostPreviewScreen = ({ route }) => {
 
     try {
       await axios
-        .post(ADD_POST, formData, headers)
+        .post(ADD_POST, formData, { headers })
         .then((response) => {
           console.log(response.data);
           navigation.navigate("Home");
